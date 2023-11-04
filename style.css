@@ -1,0 +1,15 @@
+h2 {
+	color: blue;
+    text-align: center;
+    border: dashed;
+    border-color: rgba(255,0,0,0.3)
+
+}
+h2:hover {
+	border:solid;
+}
+p{
+   text-align: center;
+   font-size: bold;
+   color: red;
+}
