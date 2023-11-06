@@ -1,0 +1,44 @@
+body {
+	background-image: url(background.img);
+	background-size: cover;
+
+}
+li{
+	list-style: none;
+	display: inline ;
+}
+h2{
+	text-align: center;
+	color: rgba(17, 102, 17, 1);
+	border: dashed;
+	border-color: rgba(17, 102, 17, 0.5);
+	cursor: pointer;
+}
+ h2:hover {
+ 	border:solid;
+	
+
+}
+p{
+	color: rgba(0, 68, 0, 1);
+	cursor: help;
+	border:dashed;
+	border-color: rgba(17, 102, 17, 0.5);
+	text-align: center;
+}
+p:hover	{
+	border:solid ;
+}
+/*.my	{
+	border:solid;
+
+}*/
+#id{
+	background: rgba(0,0,255,0.2);
+}
+#id1{
+    background: rgba(255,0,0,0.2);	
+}
+.my{
+	color: red
+}

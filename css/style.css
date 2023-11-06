@@ -1,0 +1,36 @@
+h2{
+	color:red;
+	text-align: center;
+	border:dashed ;
+	background: rgba(255,0,0,0.2);
+
+
+}
+h2:hover{
+	border:solid;
+}
+body{
+	background-image: url(background.img);
+	background-size: cover;
+}
+p{
+	border:dashed;
+	color:blue;
+	font-family: 'Edu TAS Beginner', cursive;
+	font-weight: bold;
+	font-size: 150% ;
+	line-height: 3
+
+}
+p:hover{
+	border:solid;
+}
+
+img{
+	float: right;
+}
+footer{
+	clear: both;
+	text-align: center;
+	font-size:200%;
+}
