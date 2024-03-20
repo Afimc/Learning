@@ -12,12 +12,12 @@
 
 
 
-const question = () => {
+const question = (text) => {
   return new Promise((resolve, reject) => {
     const opt = { input: process.stdin, output: process.stdout };
     const readline = require('node:readline').createInterface(opt);
 
-    readline.question('Please Enter a Number: \n', (num) => {
+    readline.question( text+' \n', (num) => {
       readline.close();
       resolve(num);
     });
@@ -53,7 +53,7 @@ async function game() {
   while (bulls < 4) {
     bulls = 0
     cows = 0
-    const userNumber = await question()
+    const userNumber = await question('Please enter number:')
     const gues = userNumber.split('')
     if (gues.length === 4 && !gues.some(isNaN) && hasNoDuplicates(gues)) {
       counter++
