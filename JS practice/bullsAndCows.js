@@ -32,19 +32,31 @@ function getRandomNumberNoRepeat() {
     .slice(0, 4)
 }
 
+function hasNoDuplicates(arr) {
+  var counts = [];
 
+  for (var i = 0; i <= arr.length; i++) {
+    if (counts[arr[i]] === undefined) {
+      counts[arr[i]] = 1;
+    } else {
+      return false;
+    }
+  }
+  return true;
+}
 async function game() {
 
   const randomNumber = getRandomNumberNoRepeat().split('')
-  console.log({ randomNumber })
-  bulls = 0
-  cows = 0
+  let bulls = 0
+  let cows = 0
+  let counter = 0
   while (bulls < 4) {
-    bulls=0
-    cows=0
+    bulls = 0
+    cows = 0
     const userNumber = await question()
     const gues = userNumber.split('')
-    if (gues.length === 4 && !gues.some(isNaN)) {
+    if (gues.length === 4 && !gues.some(isNaN) && hasNoDuplicates(gues)) {
+      counter++
       for (let i = 0; i < randomNumber.length; i++) {
         for (let j = 0; j < userNumber.length; j++) {
           if (randomNumber[i] === userNumber[j]) {
@@ -53,15 +65,13 @@ async function game() {
             } else {
               cows++
             }
-          } 
+          }
         }
-      }
+      } console.log('in ' + counter + ' gues' + ' you have got ' + bulls + ' Bull(s) and ' + cows + ' Cow(s)')
     } else {
-      console.log('Wrong Number')
+      console.log('Pleace enter a valit four digits number ')
     }
-    console.log({ bulls })
-    console.log({ cows })
-  }console.log('win')
+  } console.log('Congratulations you have WIN in ' + counter + ' attempts')
 }
 game()
 
