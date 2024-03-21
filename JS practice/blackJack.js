@@ -8,7 +8,7 @@
 
 
 class Card {
-    constructor(id, name, suit, points) {
+    constructor(id, name, suit,) {
         this.id = id
         this.name = name
         this.suit = suit
@@ -54,25 +54,64 @@ function shuffleArray(columnCards) {
     return columnCards
 }
 
+function getPoints(cardToGetPoints, points) {
+    let getPoint = 0
+    if (cardToGetPoints.name === 'A' && points > 10) {
+        getPoint = 1
+    } else if (cardToGetPoints.name === 'A' && points <= 10) {
+        getPoint = 11
+    } else if (cardToGetPoints.name === 'j'
+        || cardToGetPoints.name === 'q'
+        || cardToGetPoints.name === 'k'
+        || cardToGetPoints.name === '10') {
+        getPoint = 10
+    } else
+        // getPoint = +cardToGetPoints.name or
+        getPoint = parseInt(cardToGetPoints.name)
+    return getPoint
+}
+
 
 async function game() {
-    const deck = createDeck()
-    const shuffledDeck = shuffleArray(deck)
-    console.log(shuffledDeck)
-    let respond = 'Y'
-    let points = 0
-    for (let i = 0; i < shuffledDeck.length; i++) {
-        // let respond=await question('DO you want a card Y/N:')
-        if(respond==='Y'){
-            points = points+1
-            
-         
+    let yourPoints = 0
+    let computerPoints = 0
+    let wantPlay = 'Y'
+    while (wantPlay === 'Y' && yourPoints < 3 && computerPoints < 3) {
+        wantPlay = await question('Do you Want anothr game? Y/N:')
+        const deck = createDeck()
+        const shuffledDeck = shuffleArray(deck)
+        let points = 0
+        let respond = 'Y'
+        console.log('You have ' + yourPoints + ' Wins Comuter have ' + computerPoints + ' Wins')
+        for (let i = 0; i < shuffledDeck.length; i++) {
+            respond = await question('DO you want a card Y/N:')
+            if (respond === 'Y') {
+                points = points + getPoints(shuffledDeck[i], points)
+                console.log('You have got ' + shuffledDeck[i].name + ' ' + shuffledDeck[i].suit)
+                console.log(points)
+                if (points === 21) {
+                    yourPoints++
+                    console.log('You Win with 21 congratulations!!!')
+                    break
+                } else if (points > 21) {
+                    computerPoints++
+                    console.log('Sorry You have got ' + points + ' and lose. Good luck next hand!')
+                    break
+                }
+            } else if (respond === 'N') {
+                points = points + getPoints(shuffledDeck[i], points)
+                console.log('Computer have got ' + shuffledDeck[i].name + ' ' + shuffledDeck[i].suit)
+                if (points > 21) {
+                    yourPoints++
+                    console.log('Computer get ' + points + 'You Win!!!')
+                    break
+                } else if (points < 21) {
+                    computerPoints++
+                    console.log('Sorry you lose. Better luck next time')
+                    break
+                }
+            }
         }
-        
-        console.log(points)
-        
-
     }
-   
 }
 game()
