@@ -12,9 +12,7 @@ class Card {
         this.id = id
         this.name = name
         this.suit = suit
-
     }
-
 }
 
 const question = (text) => {
@@ -71,7 +69,6 @@ function getPoints(cardToGetPoints, points) {
     return getPoint
 }
 
-
 async function game() {
     let yourPoints = 0
     let computerPoints = 0
@@ -103,7 +100,7 @@ async function game() {
                 console.log('Computer have got ' + shuffledDeck[i].name + ' ' + shuffledDeck[i].suit)
                 if (points > 21) {
                     yourPoints++
-                    console.log('Computer get ' + points + 'You Win!!!')
+                    console.log('Computer get ' + points + ' You Win!!!')
                     break
                 } else if (points < 21) {
                     computerPoints++
