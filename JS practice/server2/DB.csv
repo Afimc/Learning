@@ -2,15 +2,22 @@
   {
     "id": 1,
     "task": "coding",
-    "status": "inprogres",
-    "deadline": "22.03.2024",
-    "lastModified": "2024-03-26T17:24:22.208Z"
+    "status": "done",
+    "deadline": "Wed Apr 03 2024",
+    "lastModified": "2024-03-27T18:37:45.995Z"
   },
   {
     "id": 2,
     "task": "coding",
-    "status": "inprogres",
-    "deadline": "22.03.2024",
-    "lastModified": "2024-03-26T17:34:41.158Z"
+    "status": "done",
+    "deadline": "Wed Apr 03 2024",
+    "lastModified": "2024-03-27T19:37:11.219Z"
+  },
+  {
+    "id": 3,
+    "task": "coding",
+    "status": "done",
+    "deadline": "Wed Apr 03 2024",
+    "lastModified": "2024-03-27T19:37:23.386Z"
   }
 ]
