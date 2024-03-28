@@ -1,28 +1,15 @@
 const fs = require('fs');
 
 
-function sort(){
-    const readingFile = fs.readFileSync('DB.csv')
-    const dataArray = JSON.parse(readingFile)
-    console.log(dataArray)
-    readyToCompare=dataArray.map(i=>{
-        const partsOfDate = i.deadline.split('-')
-        const formatedData = new Date(partsOfDate[0], partsOfDate[1] - 1, partsOfDate[2]);
-        const formatedDataForCompare = formatedData.getTime()
-        i.deadline=formatedDataForCompare
-        return i
+function sort(dataArray){
+    const sortedArray = dataArray.sort((a,b)=>{
+        const partsOfDateA = a.deadline.split('-')
+        const partsOfDateB = b.deadline.split('-')
+        const formatedDataA = new Date(partsOfDateA[0], partsOfDateA[1] - 1, partsOfDateA[2]).getTime()
+        const formatedDataB = new Date(partsOfDateB[0], partsOfDateB[1] - 1, partsOfDateB[2]).getTime()
+        return formatedDataB - formatedDataA
     })
- 
-    const sortedArray = readyToCompare.sort(({deadline:a}, {deadline:b}) => b-a);
-    const readySortedArray = sortedArray.map(x=>{
-         const res =x.deadline
-         const ready=new Date(res).toDateString()
-         x.deadline=ready
-         return x
-        
-
-    })
-    return readySortedArray
+    return sortedArray
 }
 
 function getList(filterValue,sorter) {
@@ -31,18 +18,20 @@ function getList(filterValue,sorter) {
     }
     const readingFile = fs.readFileSync('DB.csv')
     const dataArray = JSON.parse(readingFile)
+    const filteredData = dataArray.filter(x => x.status === filterValue)
     if (!filterValue) {
-        if(!sorter)
-        return dataArray
-    }else{return sort(dataArray)}
-    if(!sorter){
-        const filteredData = dataArray.filter(x => x.status === filterValue)
-        return filteredData
-    }else { 
-        const filteredData = dataArray.filter(x => x.status === filterValue)
-        return sort(filteredData) 
+        if (!sorter) {
+            return dataArray
+        } else {
+            return sort(dataArray)
+        }
     }
 
+    if (!sorter) {
+        return filteredData
+    } else { 
+        return sort(filteredData) 
+    }
 }
 
 function addNewTask(taskInput, statusInput, DateString) {
@@ -142,3 +131,21 @@ module.exports = { changeStatus, addNewTask, deleteTask, getList }
 // })
 // const stringifyData = JSON.stringify(dataArray, null, 2)
 // fs.writeFileSync('DB.csv', stringifyData);
+
+
+    // const readyToCompare = dataArray.map(i=>{
+    //     const partsOfDate = i.deadline.split('-')
+    //     const formatedData = new Date(partsOfDate[0], partsOfDate[1] - 1, partsOfDate[2]);
+    //     const formatedDataForCompare = formatedData.getTime()
+    //     i.deadline=formatedDataForCompare
+    //     return i
+    // })
+ 
+    // const sortedArray = readyToCompare.sort((a, b) => b.deadline - a.deadline);
+    // const readySortedArray = sortedArray.map(x=>{
+    //      const res = x.deadline
+    //      const ready = new Date(res).toDateString()
+    //      x.deadline = ready
+    //      return x
+    // })
+    // return readySortedArray

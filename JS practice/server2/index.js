@@ -12,13 +12,10 @@ const port = 3000
 const routs = require('./routs.js');
 const { changeStatus, addNewTask, deleteTask, getList } = require('./routs.js')
 
-//да мога да подам отделно рекуест статус и зависи на какво е равно да ми показва само тезе 
-// таскове а ако няма рекъестнато да връща всички и сортер да ги сортира по крайна дата 
-
 app.get('/get-list', (req, res) => {
     try {
         const sorter=req.query.sortBydeadline
-        const filterValue = req.query.sortByStatus
+        const filterValue = req.query.filterByStatus
         const getListResult = getList(filterValue,sorter)
         res.send(getListResult)
     } catch (error) {
@@ -79,19 +76,19 @@ app.listen(port, () => {
 //       id: 2,
 //       task: "shoping",
 //       status: "inprogres",
-//       deadline: "2024-11-02",
+//       deadline: "2024-08-02",
 //       lastModified: "Thu Mar 28 2024"
 //     }
 //   ]
 // ReadyToCompare=dataArray.map(i=>{
 //     const partsOfDate = i.deadline.split('-')
 //     const formatedData = new Date(partsOfDate[0], partsOfDate[1] - 1, partsOfDate[2]);
-//     const formatedDataForCompare =formatedData.getTime()
-//     i.deadline=formatedDataForCompare
+//     // const formatedDataForCompare =formatedData.getTime()
+//     i.deadline=formatedData
 //     return i
 
 // })
-
+// console.log(ReadyToCompare)
 // var res = ReadyToCompare.sort(({deadline:a}, {deadline:b}) => b-a);
 // console.log(res)
 
