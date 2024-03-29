@@ -1,15 +1,7 @@
-// файл за база данни (comma separated value) to do list  който да има задачата и краиния 
-// срок и статуси и самата задача кога е последно променена  .comma
-// да има функция за четене на листа за добавяне и промяна и да променяш статуса . 
-// базата данни ще съдържа статуса крайна дата и кога последно е променен 
-// ++++ нов фаил servise.js които да има няколко функции за фсички енд поинти със логиките и тук да извиквам само функцията 
-// Date.now()
-// console.log(Date.now())
+
 const express = require('express')
-const fs = require('fs');
 const app = express()
 const port = 3000
-const routs = require('./routs.js');
 const { changeStatus, addNewTask, deleteTask, getList } = require('./routs.js')
 
 app.get('/get-list', (req, res) => {
@@ -61,9 +53,10 @@ app.listen(port, () => {
 })
 
 
-// const dateOne = new Date().getTime()
-// const dateTwo = new Date()
-
+// const dateOne = new Date().toDateString()
+// const dateTwo = new Date(dateOne)
+// console.log(dateOne)
+// console.log(dateTwo)
 // dataArray=[
 //     {
 //       id: 1,
@@ -84,14 +77,14 @@ app.listen(port, () => {
 //     const partsOfDate = i.deadline.split('-')
 //     const formatedData = new Date(partsOfDate[0], partsOfDate[1] - 1, partsOfDate[2]);
 //     // const formatedDataForCompare =formatedData.getTime()
-//     i.deadline=formatedData
+//     i.deadline=formatedData.toDateString()
 //     return i
 
 // })
 // console.log(ReadyToCompare)
-// var res = ReadyToCompare.sort(({deadline:a}, {deadline:b}) => b-a);
-// console.log(res)
+// // var res = ReadyToCompare.sort(({deadline:a}, {deadline:b}) => b-a);
+// // console.log(res)
 
-// const time =1712185200000
-//  const res =new Date(time).toDateString()
-//  console.log(res)
+// // const time =1712185200000
+// //  const res =new Date(time).toDateString()
+// //  console.log(res)

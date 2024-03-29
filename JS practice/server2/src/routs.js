@@ -1,24 +1,12 @@
-const fs = require('fs');
 
+const { sort,writeStringifiedDataToFile,readingFileAsArray} = require('./tools.js')
 
-function sort(dataArray){
-    const sortedArray = dataArray.sort((a,b)=>{
-        const partsOfDateA = a.deadline.split('-')
-        const partsOfDateB = b.deadline.split('-')
-        const formatedDataA = new Date(partsOfDateA[0], partsOfDateA[1] - 1, partsOfDateA[2]).getTime()
-        const formatedDataB = new Date(partsOfDateB[0], partsOfDateB[1] - 1, partsOfDateB[2]).getTime()
-        return formatedDataB - formatedDataA
-    })
-    return sortedArray
-}
 
 function getList(filterValue,sorter) {
     if (filterValue && filterValue !== 'done' && filterValue !== 'inprogres') {
         throw new Error('Enter a valid filter Status done/inprogres');
     }
-    const readingFile = fs.readFileSync('DB.csv')
-    const dataArray = JSON.parse(readingFile)
-    const filteredData = dataArray.filter(x => x.status === filterValue)
+    const dataArray=readingFileAsArray()
     if (!filterValue) {
         if (!sorter) {
             return dataArray
@@ -26,6 +14,8 @@ function getList(filterValue,sorter) {
             return sort(dataArray)
         }
     }
+    
+    const filteredData = dataArray.filter(x => x.status === filterValue)
 
     if (!sorter) {
         return filteredData
@@ -44,8 +34,7 @@ function addNewTask(taskInput, statusInput, DateString) {
     if (!DateString) {
         throw new Error('Enter a deadline to comleate the task ex(2024-04-03)');
     }
-    const readingFile = fs.readFileSync('DB.csv')
-    const dataArray = JSON.parse(readingFile)
+    const dataArray = readingFileAsArray()
     const id = dataArray.length + 1
     const partsOfDate = DateString.split('-')
     const formatedData = new Date(partsOfDate[0], partsOfDate[1] - 1, partsOfDate[2]);
@@ -53,12 +42,11 @@ function addNewTask(taskInput, statusInput, DateString) {
         id: id,
         task: taskInput,
         status: statusInput,
-        deadline:DateString,  // formatedData.toDateString(),
+        deadline:formatedData.toDateString(),
         lastModified: new Date().toDateString()
     }
     dataArray.push(toDo)
-    const stringifyData = JSON.stringify(dataArray, null, 2)
-    fs.writeFileSync('DB.csv', stringifyData);
+    writeStringifiedDataToFile(dataArray)
     return toDo
 }
 
@@ -69,16 +57,14 @@ function changeStatus(reqId, newStatus) {
     if (newStatus !== 'done' && newStatus !== 'inprogres') {
         throw new Error('Enter a valid Status done/inprogres');
     }
-    const readingFile = fs.readFileSync('DB.csv');
-    const dataArray = JSON.parse(readingFile);
+    const dataArray = readingFileAsArray()
     const itemToChange = dataArray.find(i => i.id === +reqId);
     if (!itemToChange) {
         throw new Error('can not find an item')
     }
     itemToChange.status = newStatus
     itemToChange.lastModified = new Date().toDateString()
-    const stringifyData = JSON.stringify(dataArray, null, 2)
-    fs.writeFileSync('DB.csv', stringifyData);
+    writeStringifiedDataToFile(dataArray)
     return itemToChange
 }
 
@@ -86,8 +72,7 @@ function deleteTask(idToDelete) {
     if (!idToDelete) {
         throw new Error('No ID task to delete ');
     }
-    const readingFile = fs.readFileSync('DB.csv')
-    const dataArray = JSON.parse(readingFile)
+    const dataArray = readingFileAsArray()
     const validId = dataArray.some((x) => x.id === idToDelete)
     if (!validId) {
         throw new Error('No valid task ID ');
@@ -96,8 +81,7 @@ function deleteTask(idToDelete) {
     for (let x = 0; x < newDataArray.length; x++) {
         newDataArray[x].id = x + 1
     }
-    const stringifyData = JSON.stringify(newDataArray, null, 2)
-    fs.writeFileSync('DB.csv', stringifyData);
+    writeStringifiedDataToFile(newDataArray)
     return newDataArray
 }
 
