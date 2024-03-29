@@ -1,12 +1,12 @@
 
-const { sort,writeStringifiedDataToFile,readingFileAsArray} = require('./tools.js')
+const { sort,writeStringifiedDataToFile,readingFileAsArray,DBfile,logs} = require('./tools.js')
 
 
 function getList(filterValue,sorter) {
     if (filterValue && filterValue !== 'done' && filterValue !== 'inprogres') {
         throw new Error('Enter a valid filter Status done/inprogres');
     }
-    const dataArray=readingFileAsArray()
+    const dataArray=readingFileAsArray(DBfile)
     if (!filterValue) {
         if (!sorter) {
             return dataArray
@@ -21,7 +21,7 @@ function getList(filterValue,sorter) {
         return filteredData
     } else { 
         return sort(filteredData) 
-    }
+    }  
 }
 
 function addNewTask(taskInput, statusInput, DateString) {
@@ -34,7 +34,7 @@ function addNewTask(taskInput, statusInput, DateString) {
     if (!DateString) {
         throw new Error('Enter a deadline to comleate the task ex(2024-04-03)');
     }
-    const dataArray = readingFileAsArray()
+    const dataArray = readingFileAsArray(DBfile)
     const id = dataArray.length + 1
     const partsOfDate = DateString.split('-')
     const formatedData = new Date(partsOfDate[0], partsOfDate[1] - 1, partsOfDate[2]);
@@ -46,7 +46,7 @@ function addNewTask(taskInput, statusInput, DateString) {
         lastModified: new Date().toDateString()
     }
     dataArray.push(toDo)
-    writeStringifiedDataToFile(dataArray)
+    writeStringifiedDataToFile(dataArray,DBfile)
     return toDo
 }
 
@@ -57,14 +57,14 @@ function changeStatus(reqId, newStatus) {
     if (newStatus !== 'done' && newStatus !== 'inprogres') {
         throw new Error('Enter a valid Status done/inprogres');
     }
-    const dataArray = readingFileAsArray()
+    const dataArray = readingFileAsArray(DBfile)
     const itemToChange = dataArray.find(i => i.id === +reqId);
     if (!itemToChange) {
         throw new Error('can not find an item')
     }
     itemToChange.status = newStatus
     itemToChange.lastModified = new Date().toDateString()
-    writeStringifiedDataToFile(dataArray)
+    writeStringifiedDataToFile(dataArray,DBfile)
     return itemToChange
 }
 
@@ -72,20 +72,26 @@ function deleteTask(idToDelete) {
     if (!idToDelete) {
         throw new Error('No ID task to delete ');
     }
-    const dataArray = readingFileAsArray()
+    const dataArray = readingFileAsArray(DBfile)
     const validId = dataArray.some((x) => x.id === idToDelete)
     if (!validId) {
         throw new Error('No valid task ID ');
     }
+    const objectToDelete=dataArray.find((i) => i.id === idToDelete)
     const newDataArray = dataArray.filter(x => x.id !== idToDelete);
     for (let x = 0; x < newDataArray.length; x++) {
         newDataArray[x].id = x + 1
     }
-    writeStringifiedDataToFile(newDataArray)
-    return newDataArray
+    writeStringifiedDataToFile(newDataArray,DBfile)
+    return [newDataArray,objectToDelete]
 }
 
-module.exports = { changeStatus, addNewTask, deleteTask, getList }
+function getLogs(){
+    const dataArray=readingFileAsArray(logs)
+    return dataArray
+}
+
+module.exports = { changeStatus, addNewTask, deleteTask, getList,getLogs}
 
 
 

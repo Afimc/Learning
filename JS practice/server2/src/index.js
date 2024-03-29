@@ -1,15 +1,16 @@
-
+//още един ендпоинт който да ретърнва контента от логфаила 
 const express = require('express')
 const app = express()
 const port = 3000
-const { changeStatus, addNewTask, deleteTask, getList } = require('./routs.js')
-
+const { changeStatus, addNewTask, deleteTask, getList, getLogs } = require('./routs.js')
+const {addAction} = require('./tools.js')
 app.get('/get-list', (req, res) => {
     try {
         const sorter=req.query.sortBydeadline
         const filterValue = req.query.filterByStatus
         const getListResult = getList(filterValue,sorter)
         res.send(getListResult)
+        addAction('geting a list of tasks',getListResult)
     } catch (error) {
         res.send('Error: ' + error.message)
     }
@@ -22,6 +23,7 @@ app.post('/add-new-task', (req, res) => {
         const DateString = req.query.deadline
         const addNewTaskResult = addNewTask(taskInput, statusInput, DateString)
         res.send(addNewTaskResult)
+        addAction('New task Added',addNewTaskResult)
     } catch (error) {
         res.send('Error: ' + error.message)
     }
@@ -33,6 +35,7 @@ app.post('/change-status', (req, res) => {
         const newStatus = req.query.updatingStatus
         const changeStatusResult = changeStatus(reqId, newStatus)
         res.send(changeStatusResult)
+        addAction('Status changed',changeStatusResult)
     } catch (error) {
         res.send('Error: ' + error.message)
     }
@@ -42,7 +45,18 @@ app.post('/delete', (req, res) => {
     try {
         const idToDelete = +req.query.id
         const deleteTaskResult = deleteTask(idToDelete)
-        res.send(deleteTaskResult)
+        res.send(deleteTaskResult[0])
+        addAction('Item deleted',deleteTaskResult[1])
+    } catch (error) {
+        res.send('Error: ' + error.message)
+        addAction('del ',error.message)
+    }
+})
+
+app.get('/get-logs', (req, res) => {
+    try {
+        const getLogsResult = getLogs()
+        res.send(getLogsResult)
     } catch (error) {
         res.send('Error: ' + error.message)
     }
