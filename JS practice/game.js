@@ -125,7 +125,6 @@ function draw(players) {
     
     return readyDraw
 }
-console.log(players)
 function tournament(maches) {
     const readyDrawResult = draw(maches)
     const winnerList = []

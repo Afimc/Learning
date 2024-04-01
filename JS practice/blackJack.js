@@ -73,7 +73,7 @@ async function game() {
     let yourPoints = 0
     let computerPoints = 0
     let wantPlay = 'Y'
-    while (wantPlay === 'Y' && yourPoints < 3 && computerPoints < 3) {
+    while (wantPlay === 'Y' && yourPoints < 10 && computerPoints < 10) {
         wantPlay = await question('Do you Want anothr game? Y/N:')
         const deck = createDeck()
         const shuffledDeck = shuffleArray(deck)

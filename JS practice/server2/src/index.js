@@ -1,7 +1,10 @@
-//още един ендпоинт който да ретърнва контента от логфаила 
+
+// нов реацт проект 
+var cors = require('cors')
 const express = require('express')
 const app = express()
-const port = 3000
+app.use(cors())
+const port = 8000
 const { changeStatus, addNewTask, deleteTask, getList, getLogs } = require('./routs.js')
 const {addAction} = require('./tools.js')
 app.get('/get-list', (req, res) => {
@@ -48,7 +51,7 @@ app.post('/delete', (req, res) => {
         res.send(deleteTaskResult[0])
         addAction('Item deleted',deleteTaskResult[1])
     } catch (error) {
-        res.send('Error: ' + error.message)
+        res.status(500).send('Error: ' + error.message)
         addAction('del ',error.message)
     }
 })

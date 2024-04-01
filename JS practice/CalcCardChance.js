@@ -143,5 +143,5 @@ function calcChance(choices, deck1) {
 
 const deck = createDeck()
 const shuffledColumn = shuffleArray(deck)
-const result = calcChance([{ name: '8', suit: 'spade' }, { suit: 'club' }], shuffledColumn)
+const result = calcChance([{ name: 'A', }], shuffledColumn)
 console.log(result)
