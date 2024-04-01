@@ -1,0 +1,23 @@
+*{
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+#root{
+    background-color: #ffffff;
+
+    background-image:  repeating-linear-gradient(45deg, #f6f6f6 25%, transparent 25%, transparent 75%, #f6f6f6 75%, #f6f6f6), repeating-linear-gradient(45deg, #f6f6f6 25%, #ffffff 25%, #ffffff 75%, #f6f6f6 75%, #f6f6f6);
+    background-position: 0 0, 4px 4px;
+    background-size: 8px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* gap: 50px; */
+}
+
+body{
+
+}
+
+
