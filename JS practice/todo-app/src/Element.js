@@ -4,7 +4,14 @@ import './Element.css';
 
 function Element(props) {
   const [isEditeMode,setEditMode] = useState(false)
-  const [itemStatus,setItemStatus]=useState(props.task.status)
+  const [itemStatus,setItemStatus] = useState(props.task.status)
+  const [isItemToDelete, setIsItemToDelete] = useState(false)
+
+  function deleteOnCancel(){
+    setIsItemToDelete(false)
+    props.delete(props.task.id)
+  }
+
   function onCancel(){
     setEditMode(false)
     setItemStatus(props.task.status)
@@ -35,9 +42,18 @@ function Element(props) {
               <button onClick={()=>saveChanges()}>save</button>
               <button onClick={()=>onCancel()}>cancel</button>
             </div> 
-          : <div className='buttons'>
-              <button onClick={()=>setEditMode(true)}>Edit</button>
-              <button onClick={()=>props.delete(props.task.id)}>Delete</button>
+          : 
+          isItemToDelete
+              ? 
+              <div className='buttons3'>
+                  <button onClick={()=>deleteOnCancel()}>Delete</button>
+                  <button onClick={()=>setIsItemToDelete(false)}>Cancel</button>
+              </div>
+              : <div className='buttons2'>
+              <button id='editeButton' onClick={()=>setEditMode(true)}>Edit</button>
+              <button id='deleteButton' onClick={()=>setIsItemToDelete(true)}>Delete</button>
+            
+            
             </div>
       }
 
@@ -47,3 +63,6 @@ function Element(props) {
 }
 
 export default Element;
+
+
+// props.delete(props.task.id)

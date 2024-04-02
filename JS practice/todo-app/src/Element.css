@@ -31,12 +31,31 @@
     width: 20%;
 }
 
+button{
+    background-color: rgba(165, 181, 181, 0.27);
+}
+
 .buttons{
     height: audo;
     width: 10%;
     display: flex;
     justify-content: space-between;
 }
-button{
-    background-color: rgba(165, 181, 181, 0.27);
+
+.buttons2{
+    
+    height: audo;
+    width: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.buttons3{
+    
+    height: audo;
+    width: auto;
+    display: flex;
+    justify-content: space-between;
 }

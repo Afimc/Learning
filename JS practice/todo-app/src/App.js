@@ -5,12 +5,16 @@ import axios from 'axios';
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [upcomingError, setUpcomingError] = useState('')
   const [taskInput, setTaskInput] = useState('');
   const [deadlineInput, setDeadlineInput] = useState('');
   const [sortChecked, setSortChecked] = useState(false);
   const [doneChecked, setDoneChecked] = useState(false);
   const [inprogresChecked, setInprogresChecked] = useState(false);
   const port = 'http://localhost:8000/'
+  const doneFilteredList = 'filterByStatus=done'
+  const sortedByDeadline = 'sortBydeadline=deadline'
+  const inProgresSorteredList = 'filterByStatus=inprogres'
  
 
   useEffect(() => {
@@ -19,7 +23,7 @@ function App() {
         setTasks(result.data)
       })
       .catch(error => {
-        console.log(error)
+       console.log(error)
       })
   }, [])
 
@@ -27,20 +31,20 @@ function App() {
     try {
       let getTasksResult
       if (doneChecked){
-          getTasksResult = await  axios.get(port+'get-list?filterByStatus=done')
+          getTasksResult = await  axios.get(port+'get-list?'+doneFilteredList)
         if(sortChecked){
-           getTasksResult = await  axios.get(port+'get-list?filterByStatus=done&sortBydeadline=deadline')
+           getTasksResult = await  axios.get(port+'get-list?'+doneFilteredList+'&'+sortedByDeadline)
         }
       } else if(inprogresChecked){
-          getTasksResult = await  axios.get(port+'get-list?filterByStatus=inprogres')
+          getTasksResult = await  axios.get(port+'get-list?'+inProgresSorteredList)
         if(sortChecked){
-          getTasksResult = await  axios.get(port+'get-list?filterByStatus=inprogres&sortBydeadline=deadline')
+          getTasksResult = await  axios.get(port+'get-list?'+inProgresSorteredList+'&'+sortedByDeadline)
         }
       } else if(sortChecked){
-        getTasksResult = await  axios.get(port+'get-list?sortBydeadline=deadline')
-     
+        getTasksResult = await  axios.get(port+'get-list?'+sortedByDeadline)
+      } else if(!sortChecked&&!doneChecked&&!inprogresChecked){
+        getTasksResult = await axios.get(port+'get-list')
       }
-
       setTasks(getTasksResult.data)
     } catch (error) {
       
@@ -49,15 +53,16 @@ function App() {
 
   async function addNewTask() {
     try {
+      setUpcomingError('')
       const AddedTask = await axios.post(port+'add-new-task?task='+taskInput+'&deadline='+deadlineInput+'&status=inprogres')
       const getTasksResult = await  axios.get(port+'get-list')
       setTasks(getTasksResult.data)
     } catch (error) {
-      console.log(error)
+      setUpcomingError(error.response.data)
+    } finally{
+      setTaskInput('')
+      setDeadlineInput('')
     }
-    setTaskInput('')
-    setDeadlineInput('')
-
   }
 
   async function editStatus(taskId, newStatus) {
@@ -83,9 +88,12 @@ function App() {
 
   return (
     <div className="App">
+    { 
+      upcomingError ? <p>{upcomingError}</p>:null
+    }
+   
       <div className='optionMenu'>
         <div className='checkMenu'>
-        
           <label><input type="checkbox" checked={sortChecked} onChange={()=>setSortChecked(!sortChecked)}/>Sorter by deadline</label>
           <label><input type="checkbox" checked={doneChecked} onChange={()=>setDoneChecked(!doneChecked)}/>Show only status Done</label>
           <label><input type="checkbox" checked={inprogresChecked} onChange={()=>setInprogresChecked(!inprogresChecked)}/>Show only status In Progres</label>
