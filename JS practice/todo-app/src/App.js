@@ -2,6 +2,7 @@ import Element from './Element';
 import './App.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import {getTasksResultFunction, editTaskFunction, addTaskFunction} from './tools.js'
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -12,53 +13,71 @@ function App() {
   const [doneChecked, setDoneChecked] = useState(false);
   const [inprogresChecked, setInprogresChecked] = useState(false);
   const port = 'http://localhost:8000/'
-  const doneFilteredList = 'filterByStatus=done'
-  const sortedByDeadline = 'sortBydeadline=deadline'
-  const inProgresSorteredList = 'filterByStatus=inprogres'
- 
+
 
   useEffect(() => {
-    axios.get(port+'get-list')
+    getTasksResultFunction(doneChecked,inprogresChecked,sortChecked)
       .then(result => {
         setTasks(result.data)
       })
       .catch(error => {
-       console.log(error)
+        const errorMessage = error.response ? error.response.data : 'Error'
+        setUpcomingError(errorMessage)
       })
   }, [])
 
-  async function getList(){
+
+  // function getTasksResultFunction(doneChecked,inprogresChecked,sortChecked){
+  //   const getTasksResultUrl = port + 'get-list';
+  //   let params ={};
+  //   if (doneChecked) params.filterByStatus = 'done'
+  //   if (inprogresChecked) params.filterByStatus = 'inprogres'
+  //   if (sortChecked) params.sortBydeadline = 'deadline'
+
+  //  return axios.get(getTasksResultUrl, {params})
+
+    // .then(result => {
+    //   return result.data
+    // })
+    // .catch(error =>{
+    //   const errorMessage = error.response ? error.response.data : 'Error'
+    //   setUpcomingError(errorMessage)
+    // })
+    // return
+  // }
+
+
+   async function getList(){
     try {
-      let getTasksResult
-      if (doneChecked){
-          getTasksResult = await  axios.get(port+'get-list?'+doneFilteredList)
-        if(sortChecked){
-           getTasksResult = await  axios.get(port+'get-list?'+doneFilteredList+'&'+sortedByDeadline)
-        }
-      } else if(inprogresChecked){
-          getTasksResult = await  axios.get(port+'get-list?'+inProgresSorteredList)
-        if(sortChecked){
-          getTasksResult = await  axios.get(port+'get-list?'+inProgresSorteredList+'&'+sortedByDeadline)
-        }
-      } else if(sortChecked){
-        getTasksResult = await  axios.get(port+'get-list?'+sortedByDeadline)
-      } else if(!sortChecked&&!doneChecked&&!inprogresChecked){
-        getTasksResult = await axios.get(port+'get-list')
-      }
-      setTasks(getTasksResult.data)
-    } catch (error) {
-      
+     
+      setUpcomingError('')
+      const res = await getTasksResultFunction(doneChecked,inprogresChecked,sortChecked)
+      setTasks(res.data)
+    } catch (error) { 
+      const errorMessage = error.response ? error.response.data : 'Error'
+      setUpcomingError(errorMessage)
     }
   }
 
   async function addNewTask() {
     try {
       setUpcomingError('')
-      const AddedTask = await axios.post(port+'add-new-task?task='+taskInput+'&deadline='+deadlineInput+'&status=inprogres')
-      const getTasksResult = await  axios.get(port+'get-list')
+      // const addNewTaskUrl =port+'add-new-task'
+      // const addParams = {
+      //     task : taskInput,
+      //     deadline : deadlineInput,
+      //     status:'inprogres'
+      //   };
+      //   const options = {params:addParams}
+
+
+
+      const AddedTask = await addTaskFunction(taskInput, deadlineInput)
+      const getTasksResult = await getTasksResultFunction(doneChecked,inprogresChecked,sortChecked)
       setTasks(getTasksResult.data)
     } catch (error) {
-      setUpcomingError(error.response.data)
+      const errorMessage = error.response ? error.response.data : 'Error'
+      setUpcomingError(errorMessage)
     } finally{
       setTaskInput('')
       setDeadlineInput('')
@@ -67,22 +86,25 @@ function App() {
 
   async function editStatus(taskId, newStatus) {
     try {
-      const updatedStatusResult = await axios.post(port+'change-status?id='+taskId+'&updatingStatus='+newStatus)
-      const getTasksResult = await  axios.get(port+'get-list')
+      setUpcomingError('')
+      const updatedStatusResult = await editTaskFunction(taskId,newStatus)
+      const getTasksResult = await getTasksResultFunction(doneChecked,inprogresChecked,sortChecked)
       setTasks(getTasksResult.data)
     } catch (error) {
-      console.log(error)
+      const errorMessage = error.response ? error.response.data : 'Error'
+      setUpcomingError(errorMessage)
     }
   }
 
   function deleteTask(taskId) {
     axios.post(port+'delete?id=' + taskId)
       .then(result => {
-        console.log(result)
+        setUpcomingError('')
         setTasks(result.data)
       })
       .catch(error => {
-        console.log(error.response.data)
+      const errorMessage = error.response ? error.response.data : 'Error'
+      setUpcomingError(errorMessage)
       })
   }
 
