@@ -62,16 +62,6 @@ function App() {
   async function addNewTask() {
     try {
       setUpcomingError('')
-      // const addNewTaskUrl =port+'add-new-task'
-      // const addParams = {
-      //     task : taskInput,
-      //     deadline : deadlineInput,
-      //     status:'inprogres'
-      //   };
-      //   const options = {params:addParams}
-
-
-
       const AddedTask = await addTaskFunction(taskInput, deadlineInput)
       const getTasksResult = await getTasksResultFunction(doneChecked,inprogresChecked,sortChecked)
       setTasks(getTasksResult.data)

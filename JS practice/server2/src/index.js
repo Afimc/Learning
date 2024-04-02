@@ -15,7 +15,7 @@ app.get('/get-list', (req, res) => {
         res.send(getListResult)
         addAction('geting a list of tasks',getListResult)
     } catch (error) {
-        res.send('Error: ' + error.message)
+        res.status(500).send('Error: ' + error.message)
     }
 })
 
@@ -28,7 +28,8 @@ app.post('/add-new-task', (req, res) => {
         res.send(addNewTaskResult)
         addAction('New task Added',addNewTaskResult)
     } catch (error) {
-        res.send('Error: ' + error.message)
+        res.status(500).send('Error: ' + error.message)
+       
     }
 })
 
@@ -40,7 +41,7 @@ app.post('/change-status', (req, res) => {
         res.send(changeStatusResult)
         addAction('Status changed',changeStatusResult)
     } catch (error) {
-        res.send('Error: ' + error.message)
+        res.status(500).send('Error: ' + error.message)
     }
 })
 
@@ -61,7 +62,7 @@ app.get('/get-logs', (req, res) => {
         const getLogsResult = getLogs()
         res.send(getLogsResult)
     } catch (error) {
-        res.send('Error: ' + error.message)
+        res.status(500).send('Error: ' + error.message)
     }
 })
 
