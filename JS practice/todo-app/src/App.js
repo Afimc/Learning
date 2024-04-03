@@ -1,8 +1,7 @@
 import Element from './Element';
 import './App.css';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import {getTasksResultFunction, editTaskFunction, addTaskFunction} from './tools.js'
+import {getTasksResultFunction, editTaskFunction, addTaskFunction, deleteTaskFunction} from './tools.js'
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -12,8 +11,6 @@ function App() {
   const [sortChecked, setSortChecked] = useState(false);
   const [doneChecked, setDoneChecked] = useState(false);
   const [inprogresChecked, setInprogresChecked] = useState(false);
-  const port = 'http://localhost:8000/'
-
 
   useEffect(() => {
     getTasksResultFunction(doneChecked,inprogresChecked,sortChecked)
@@ -25,27 +22,6 @@ function App() {
         setUpcomingError(errorMessage)
       })
   }, [])
-
-
-  // function getTasksResultFunction(doneChecked,inprogresChecked,sortChecked){
-  //   const getTasksResultUrl = port + 'get-list';
-  //   let params ={};
-  //   if (doneChecked) params.filterByStatus = 'done'
-  //   if (inprogresChecked) params.filterByStatus = 'inprogres'
-  //   if (sortChecked) params.sortBydeadline = 'deadline'
-
-  //  return axios.get(getTasksResultUrl, {params})
-
-    // .then(result => {
-    //   return result.data
-    // })
-    // .catch(error =>{
-    //   const errorMessage = error.response ? error.response.data : 'Error'
-    //   setUpcomingError(errorMessage)
-    // })
-    // return
-  // }
-
 
    async function getList(){
     try {
@@ -87,7 +63,7 @@ function App() {
   }
 
   function deleteTask(taskId) {
-    axios.post(port+'delete?id=' + taskId)
+    deleteTaskFunction(taskId)
       .then(result => {
         setUpcomingError('')
         setTasks(result.data)

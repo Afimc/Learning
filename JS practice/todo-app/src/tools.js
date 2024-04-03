@@ -36,4 +36,11 @@ function editTaskFunction(taskId,newStatus){
       return axios.post(changeStatusUrl, null, options)
 }
 
-export  {getTasksResultFunction, editTaskFunction, addTaskFunction}
+function deleteTaskFunction(taskId){
+    const deleteTaskUrl = port + 'delete'
+    const params={id:taskId}
+    return axios.post(deleteTaskUrl, null, {params})
+  }
+
+
+export  {getTasksResultFunction, editTaskFunction, addTaskFunction, deleteTaskFunction}
