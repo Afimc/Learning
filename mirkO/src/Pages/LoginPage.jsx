@@ -13,7 +13,7 @@ function LoginPage() {
     const errorMessage = usersStore((state) => state.errorMessage)
 
     return (
-        <div>
+        <div className='page'>
             <div className="Login">
                 <input type="text" value={userNameValue} onChange={(event) => setUserNameValue(event.target.value)} placeholder='Username' />
                 <input type="password" value={passwordValue} onChange={(event) => setPasswordValue(event.target.value)} placeholder='Password' />

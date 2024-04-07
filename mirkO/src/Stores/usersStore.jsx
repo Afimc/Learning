@@ -5,9 +5,10 @@ import { DB } from '../assets/DB'
 
 const usersStore = create((set) => ({
   isLoged: false,
+  userName:'',
   errorMessage: '',
   userNameMassege: '',
-
+  
 
   logIn: (username, password) => set(() => {
     const user = DB.find((i) => i.username === username)
@@ -23,8 +24,9 @@ const usersStore = create((set) => ({
     }
     return {
       isLoged: true,
+      userName: username,
       errorMessage: '',
-      userNameMassege: username + 'Your Email is ' + user.email
+      userNameMassege: 'Yo '+username + '  Email is ' + user.email
     }
   }),
 
